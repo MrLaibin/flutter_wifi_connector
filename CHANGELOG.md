@@ -13,3 +13,7 @@ Fix README for readability
 ## 2.0.0
 
 Support null safety and iOS 12+
+
+## 2.0.1
+
+update gradle plugin

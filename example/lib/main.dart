@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:wifi_connector/wifi_connector.dart';
 
 void main() => runApp(MyApp());

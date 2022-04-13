@@ -9,8 +9,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _ssidController = TextEditingController(text: '');
-  final _passwordController = TextEditingController(text: '');
+  final _ssidController = TextEditingController(text: 'P201');
+  final _passwordController = TextEditingController(text: 'm12341234');
   var _isSucceed = false;
 
   @override

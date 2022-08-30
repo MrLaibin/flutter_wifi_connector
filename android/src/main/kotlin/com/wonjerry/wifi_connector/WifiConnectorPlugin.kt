@@ -81,7 +81,7 @@ class WifiConnectorPlugin : MethodCallHandler, FlutterPlugin {
             val networkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     super.onAvailable(network)
-                    connectivityManager.bindProcessToNetwork(network)
+//                    connectivityManager.bindProcessToNetwork(network)
                     result.success(true)
                     Log.e(TAG, "onAvailable")
                 }
@@ -93,6 +93,7 @@ class WifiConnectorPlugin : MethodCallHandler, FlutterPlugin {
 
                 override fun onLost(network: Network) {
                     super.onLost(network)
+                    connectivityManager.unregisterNetworkCallback(this)
                     Log.e(TAG, "losing active connection")
                 }
 
@@ -102,7 +103,8 @@ class WifiConnectorPlugin : MethodCallHandler, FlutterPlugin {
                     result.success(false)
                 }
             }
-            connectivityManager.requestNetwork(networkRequest, networkCallback)
+            
+                .requestNetwork(networkRequest, networkCallback)
             return;
         }
         // 비밀번호가 있냐 없냐에 따라 wifi configration을 설정한다.

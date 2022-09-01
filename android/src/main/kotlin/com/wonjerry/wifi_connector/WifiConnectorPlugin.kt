@@ -106,7 +106,7 @@ class WifiConnectorPlugin : MethodCallHandler, FlutterPlugin {
                 }
             }
             
-                .requestNetwork(networkRequest, networkCallback)
+            connectivityManager.requestNetwork(networkRequest, networkCallback)
             return;
         }
         // 비밀번호가 있냐 없냐에 따라 wifi configration을 설정한다.

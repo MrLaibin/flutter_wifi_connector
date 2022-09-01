@@ -81,7 +81,7 @@ class WifiConnectorPlugin : MethodCallHandler, FlutterPlugin {
             val networkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     super.onAvailable(network)
-//                    connectivityManager.bindProcessToNetwork(network)
+                    connectivityManager.bindProcessToNetwork(network)
                     result.success(true)
                     Log.e(TAG, "onAvailable")
                 }
@@ -93,12 +93,14 @@ class WifiConnectorPlugin : MethodCallHandler, FlutterPlugin {
 
                 override fun onLost(network: Network) {
                     super.onLost(network)
+                    connectivityManager.bindProcessToNetwork(null)
                     connectivityManager.unregisterNetworkCallback(this)
                     Log.e(TAG, "losing active connection")
                 }
 
                 override fun onUnavailable() {
                     super.onUnavailable()
+                    connectivityManager.bindProcessToNetwork(null)
                     Log.e(TAG, "onUnavailable")
                     result.success(false)
                 }

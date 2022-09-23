@@ -70,8 +70,8 @@ class WifiConnectorPlugin : MethodCallHandler, FlutterPlugin {
         result.success(true)
     }
 
-    var network;
-    var networkCallback;
+    var network: Network? = null;
+    var networkCallback: ConnectivityManager.NetworkCallback? = null;
     private fun connectToWifi(call: MethodCall, result: Result) {
         val argMap = call.arguments as Map<String, Any>
         val ssid = argMap["ssid"] as String
@@ -88,7 +88,7 @@ class WifiConnectorPlugin : MethodCallHandler, FlutterPlugin {
 
             val connectivityManager = activityContext?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-            networkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {
+            networkCallback = object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     super.onAvailable(network)
                     connectivityManager.bindProcessToNetwork(network)

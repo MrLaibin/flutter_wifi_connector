@@ -58,10 +58,20 @@ class WifiConnectorPlugin : MethodCallHandler, FlutterPlugin {
     override fun onMethodCall(call: MethodCall, result: Result) {
         when (call.method) {
             "connectToWifi" -> connectToWifi(call, result)
+            "disconnect" -> disconnect(call, result)
             else -> result.notImplemented()
         }
     }
 
+    private fun disconnect(call: MethodCall, result: Result) {
+        val connectivityManager = activityContext?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        connectivityManager.bindProcessToNetwork(null)
+        connectivityManager.unregisterNetworkCallback(networkCallback)
+        result.success(true)
+    }
+
+    var network;
+    var networkCallback;
     private fun connectToWifi(call: MethodCall, result: Result) {
         val argMap = call.arguments as Map<String, Any>
         val ssid = argMap["ssid"] as String
@@ -78,7 +88,7 @@ class WifiConnectorPlugin : MethodCallHandler, FlutterPlugin {
 
             val connectivityManager = activityContext?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
-            val networkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {
+            networkCallback: ConnectivityManager.NetworkCallback = object : ConnectivityManager.NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     super.onAvailable(network)
                     connectivityManager.bindProcessToNetwork(network)
@@ -93,8 +103,8 @@ class WifiConnectorPlugin : MethodCallHandler, FlutterPlugin {
 
                 override fun onLost(network: Network) {
                     super.onLost(network)
-//                     connectivityManager.bindProcessToNetwork(null)
-//                     connectivityManager.unregisterNetworkCallback(this)
+                    connectivityManager.bindProcessToNetwork(null)
+                    connectivityManager.unregisterNetworkCallback(this)
                     Log.e(TAG, "losing active connection")
                 }
 
@@ -105,7 +115,7 @@ class WifiConnectorPlugin : MethodCallHandler, FlutterPlugin {
                     result.success(false)
                 }
             }
-            
+
             connectivityManager.requestNetwork(networkRequest, networkCallback)
             return;
         }

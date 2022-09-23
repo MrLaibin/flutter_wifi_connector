@@ -14,6 +14,8 @@ public class SwiftWifiConnectorPlugin: NSObject, FlutterPlugin {
     switch call.method {
     case "connectToWifi":
       self.connectToWifi(call, result)
+    case "disconnect":
+      result(true);
     default:
       result(FlutterMethodNotImplemented)
     }

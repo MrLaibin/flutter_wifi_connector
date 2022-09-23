@@ -13,4 +13,8 @@ class WifiConnector {
     });
     return result == true;
   }
+  static Future<bool> disconnectToWifi() async {
+    final result = await _channel.invokeMethod<bool>('disconnect', {});
+    return result == true;
+  }
 }

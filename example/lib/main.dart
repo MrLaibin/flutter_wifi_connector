@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:wifi_connector/wifi_connector.dart';
 
 void main() => runApp(MyApp());
@@ -9,7 +10,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _ssidController = TextEditingController(text: 'P201');
+  final _ssidController = TextEditingController(text: '680030000195');
   final _passwordController = TextEditingController(text: 'm12341234');
   var _isSucceed = false;
 
@@ -38,6 +39,19 @@ class _MyAppState extends State<MyApp> {
                   style: TextStyle(color: Colors.white),
                 ),
                 onPressed: _onConnectPressed,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 24.0),
+              child: ElevatedButton(
+                child: Text(
+                  'connect',
+                  style: TextStyle(color: Colors.white),
+                ),
+                onPressed: () {
+                  print("sdfljk");
+                  WifiConnector.disconnectToWifi();
+                },
               ),
             ),
             Text(
@@ -73,11 +87,25 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _onConnectPressed() async {
+    // http.get(Uri.parse("https://baidu.com"));
+    try {
+      print("sdfljk star");
+      // var response = await client.get(Uri.parse("https://baidu.com"));
+      // var decodedResponse = jsonDecode(utf8.decode(response.bodyBytes)) as Map;
+      // var uri = Uri.parse(decodedResponse['uri'] as String);
+      var response = await http.get(Uri.parse("https://baidu.com"));
+      print(response.body);
+    } catch (e) {
+      print("sdfljk $e");
+    } finally {
+      print("sdfljk");
+    }
+
     final ssid = _ssidController.text;
     final password = _passwordController.text;
     setState(() => _isSucceed = false);
-    final isSucceed =
-        await WifiConnector.connectToWifi(ssid: ssid, password: password);
+
+    final isSucceed = await WifiConnector.connectToWifi(ssid: ssid);
     setState(() => _isSucceed = isSucceed);
   }
 }

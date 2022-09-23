@@ -65,8 +65,10 @@ class WifiConnectorPlugin : MethodCallHandler, FlutterPlugin {
 
     private fun disconnect(call: MethodCall, result: Result) {
         val connectivityManager = activityContext?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        connectivityManager.bindProcessToNetwork(null)
-        connectivityManager.unregisterNetworkCallback(networkCallback)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            connectivityManager.bindProcessToNetwork(null)
+        }
+        networkCallback?.let { connectivityManager.unregisterNetworkCallback(it) }
         result.success(true)
     }
 
@@ -116,7 +118,7 @@ class WifiConnectorPlugin : MethodCallHandler, FlutterPlugin {
                 }
             }
 
-            connectivityManager.requestNetwork(networkRequest, networkCallback)
+            connectivityManager.requestNetwork(networkRequest, networkCallback as ConnectivityManager.NetworkCallback)
             return;
         }
         // 비밀번호가 있냐 없냐에 따라 wifi configration을 설정한다.

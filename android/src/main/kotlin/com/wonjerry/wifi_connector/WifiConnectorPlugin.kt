@@ -93,8 +93,8 @@ class WifiConnectorPlugin : MethodCallHandler, FlutterPlugin {
 
                 override fun onLost(network: Network) {
                     super.onLost(network)
-                    connectivityManager.bindProcessToNetwork(null)
-                    connectivityManager.unregisterNetworkCallback(this)
+//                     connectivityManager.bindProcessToNetwork(null)
+//                     connectivityManager.unregisterNetworkCallback(this)
                     Log.e(TAG, "losing active connection")
                 }
 
